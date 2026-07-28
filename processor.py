@@ -10,17 +10,17 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 def create_vector_db():
-    print("⏳ 7 PDFs ko scan kiya ja raha hai... thoda intezar karein.")
+    print("7 Scan PDF .")
     if not os.path.exists('docs'):
         os.makedirs('docs')
-        print("📁 'docs' folder bana diya hai, usme PDFs daalein.")
+        print("docs' A folder has been created. Place your PDFs in it..")
         return
 
     loader = DirectoryLoader('docs/', glob="./*.pdf", loader_cls=PyPDFLoader)
     documents = loader.load()
     
     if not documents:
-        print("❌ 'docs' folder mein koi PDF nahi mili!")
+        print('docs')
         return
 
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
@@ -29,7 +29,7 @@ def create_vector_db():
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
     vector_db = FAISS.from_documents(texts, embeddings)
     vector_db.save_local("faiss_index")
-    print(f"✅ Database Ready! {len(documents)} documents index ho gaye hain.")
+    print(f"Database Ready! {len(documents)} documents index.")
 
 def ask_vault_ai(query):
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
@@ -37,7 +37,7 @@ def ask_vault_ai(query):
     if os.path.exists("faiss_index"):
         vector_db = FAISS.load_local("faiss_index", embeddings, allow_dangerous_deserialization=True)
     else:
-        return "Database nahi mila. Pehle terminal mein 'python processor.py' chalayein."
+        return "Database not found. First, run 'python processor.py' in the terminal."
 
     docs = vector_db.similarity_search(query)
     context = "\n".join([doc.page_content for doc in docs])
@@ -48,7 +48,7 @@ def ask_vault_ai(query):
         response = model.generate_content(f"Context: {context}\n\nQuestion: {query}")
         return response.text
     except Exception as e:
-        # Fallback agar latest model mein koi dikkat ho
+        # Fallback latest model in problem
         model = genai.GenerativeModel('gemini-2.0-flash')
         response = model.generate_content(f"Context: {context}\n\nQuestion: {query}")
         return response.text
