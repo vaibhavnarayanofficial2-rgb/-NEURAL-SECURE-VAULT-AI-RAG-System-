@@ -8,7 +8,7 @@ import os
 import base64
 
 # --- 1. PAGE SETTINGS & HACKER THEME ---
-st.set_page_config(page_title="AI Secure Vault", page_icon="🔐", layout="centered")
+st.set_page_config(page_title="AI Secure Vault", page_icon= layout="centered")
 
 st.markdown("""
     <style>
@@ -31,7 +31,7 @@ def speak_text(text):
         with open("response.mp3", "rb") as f:
             audio_bytes = f.read()
             audio_base64 = base64.b64encode(audio_bytes).decode()
-            # Sirf HTML Autoplay use kar rahe hain taaki double voice na aaye
+            # Only HTML Autoplay use not runnig double voice
             audio_tag = f'<audio autoplay="true" src="data:audio/mp3;base64,{audio_base64}">'
             st.markdown(audio_tag, unsafe_allow_html=True)
     except Exception as e:
@@ -44,7 +44,7 @@ if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
 # --- 4. MAIN UI LOGIC ---
-st.title("🛡️ NEURAL SECURE VAULT")
+st.title("NEURAL SECURE VAULT")
 
 if not st.session_state.authenticated:
     st.subheader("SYSTEM LOCKED: Face ID Required")
@@ -57,19 +57,19 @@ if not st.session_state.authenticated:
         faces = face_cascade.detectMultiScale(gray, 1.1, 4)
 
         if len(faces) > 0:
-            st.success("✅ IDENTITY VERIFIED. ACCESS GRANTED.")
+            st.success("IDENTITY VERIFIED. ACCESS GRANTED.")
             st.session_state.authenticated = True
             st.rerun()
         else:
-            st.error("❌ UNKNOWN ENTITY. ACCESS DENIED.")
+            st.error("UNKNOWN ENTITY. ACCESS DENIED.")
 else:
     # VAULT GRANTED
-    st.sidebar.success("🔓 OWNER LOGGED IN")
-    if st.sidebar.button("🔒 EMERGENCY LOCK"):
+    st.sidebar.success("OWNER LOGGED IN")
+    if st.sidebar.button("EMERGENCY LOCK"):
         st.session_state.authenticated = False
         st.rerun()
 
-    st.write("### 🤖 Vault Intelligence Active")
+    st.write("### Vault Intelligence Active")
     
     query = st.chat_input("Query your encrypted documents...")
     
@@ -77,7 +77,7 @@ else:
         with st.chat_message("user"):
             st.write(query)
             
-        with st.spinner("⚡ Processing Neural Link..."):
+        with st.spinner("Processing Neural Link..."):
             response = ask_vault_ai(query)
             with st.chat_message("assistant"):
                 st.write(response)
