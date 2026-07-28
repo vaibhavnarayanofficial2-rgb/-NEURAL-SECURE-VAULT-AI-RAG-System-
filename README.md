@@ -16,13 +16,13 @@ Privacy-Focused: With .env integration, your API keys and personal files remain 
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 ```text
 AI_Secure_Vault/
-├── docs/               # Aapke secret PDF files yahan honge
-├── faiss_index/        # AI ka brain (Vector Database)
+├── docs/              # Your secret PDF files will be here.
+├── faiss_index/        # AI brain (Vector Database)
 ├── app.py              # Main Entry Point (Face-ID + Chat)
 ├── processor.py        # AI Processing & RAG Logic
 ├── auth.py             # Face-ID Security System
 ├── .env                # (Hidden) API Keys 🤫
-└── .gitignore          # Keys ko GitHub pe jane se rokta hai
+└── .gitignore          # Prevents keys from being uploaded to GitHub.
